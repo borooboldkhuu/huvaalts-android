@@ -1,0 +1,45 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+*.g.dart
+*.freezed.dart
+*.iml
+
+# IDE
+.idea/
+.vscode/
+
+# Android
+android/local.properties
+android/key.properties
+android/**/*.keystore
+android/**/*.jks
+
+# iOS
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/.symlinks/
+*.xcuserstate
+
+# Secrets — NEVER commit real values.
+# env/development.json / env/staging.json / env/production.json (see
+# lib/app/config/env.dart, loaded via --dart-define-from-file) contain
+# either dev-convenience or placeholder values only — see each file. A
+# real production/staging config should come from CI secret storage
+# writing a local override file at build time, never a committed one;
+# *.local.json here is that override's naming convention.
+env/*.local.json
+.env.local
+.env.*.local
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+
+# Coverage
+coverage/

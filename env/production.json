@@ -1,0 +1,10 @@
+{
+  "APP_ENV": "production",
+  "SUPABASE_URL": "https://placeholder-prod.supabase.co",
+  "SUPABASE_ANON_KEY": "placeholder-anon-key-prod",
+  "GOOGLE_MAPS_API_KEY": "placeholder-maps-key-prod",
+  "DAN_AUTH_MODE": "mock",
+  "PAYMENT_PROVIDER": "mock",
+  "BACKEND_API_BASE_URL": "https://placeholder-prod.functions.supabase.co",
+  "PLATFORM_COMMISSION_DEFAULT_PERCENT": "10"
+}

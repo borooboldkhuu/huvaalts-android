@@ -1,0 +1,92 @@
+name: huvalts
+description: >
+  ХУВААЛЦ — Mongolia's premium peer-to-peer asset rental marketplace.
+  Ашигладаггүй зүйлээ мөнгө болго.
+publish_to: "none"
+version: 0.12.6+1
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^3.1.0
+  riverpod_annotation: ^4.0.0
+
+  # Routing
+  go_router: ^17.5.0
+
+  # Models / codegen
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+
+  # Networking
+  dio: ^5.5.0+1
+  connectivity_plus: ^7.3.1
+
+  # Backend
+  supabase_flutter: ^2.6.0
+
+  # Push / crash / analytics
+  firebase_core: ^4.13.0
+  firebase_messaging: ^16.5.0
+  firebase_crashlytics: ^5.2.7
+  firebase_analytics: ^12.4.6
+
+  # Maps
+  google_maps_flutter: ^2.9.0
+  geolocator: ^14.0.3
+
+  # Storage
+  flutter_secure_storage: ^11.0.0
+  shared_preferences: ^2.3.2
+  hive_flutter: ^1.1.0
+
+  # Media
+  cached_network_image: ^3.4.1
+  image_picker: ^1.1.2
+  image_cropper: ^12.2.1
+
+  # UI / UX
+  flutter_svg: ^2.0.10+1
+  shimmer: ^3.0.0
+  cupertino_icons: ^1.0.8
+  # Ships a real production type family (Inter — verified Mongolian
+  # Cyrillic glyph coverage) instead of the platform-default fallback
+  # `app_typography.dart` used as a placeholder. Fonts are fetched from
+  # Google's CDN and cached on first use; see AppTypography for the
+  # fallback story if that network call fails.
+  google_fonts: ^8.2.1
+  intl: ^0.20.3
+  equatable: ^2.0.5
+  uuid: ^4.5.0
+  url_launcher: ^6.3.0
+  package_info_plus: ^10.2.1
+  device_info_plus: ^13.2.0
+  logger: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.12
+  freezed: ^3.2.3
+  json_serializable: ^6.8.0
+  riverpod_generator: ^4.0.0+1
+  custom_lint: ^0.8.1
+  riverpod_lint: ^3.1.0
+  mocktail: ^1.0.4
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/

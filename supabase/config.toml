@@ -1,0 +1,89 @@
+# ХУВААЛЦ — Supabase CLI project config.
+#
+# Added after an external audit (Aug 2026) flagged that the JWT-disable
+# requirement for this project's two public callback functions
+# (dan-callback, wire-topup-webhook — both called directly by an
+# external service with no Supabase session, see each function's own
+# header comment for why) lived only as a manually-typed
+# `--no-verify-jwt` CLI flag in supabase/README.md's deploy instructions.
+# That's easy to forget on a redeploy, and forgetting it means Supabase's
+# platform-level auth check rejects the calling service's request with
+# 401 before the function's own code ever runs — silently breaking DAN
+# consent callbacks or wire.mn payment webhooks. Declaring it here means
+# `supabase functions deploy <name>` picks up the right setting
+# automatically every time, with nothing to remember.
+#
+# `project_id` is deliberately left unset here — this repository has no
+# live Supabase project linked to it yet (see README's "Known issues").
+# Run `supabase link --project-ref <your-project-ref>` once a real
+# project exists; that command writes/updates `project_id` in this file
+# for you.
+
+[functions.dan-callback]
+verify_jwt = false
+
+[functions.wire-topup-webhook]
+verify_jwt = false
+
+# Test OTP numbers — bypasses real SMS entirely for this exact phone
+# number, so demo/manual login testing doesn't need a Twilio/Vonage/etc.
+# account configured. Confirmed via Supabase's own CLI config docs: when
+# a phone number matches a key here, GoTrue (the auth service) returns
+# the mapped code as if it had been texted, and never calls a real SMS
+# provider for that number — so this works even with zero SMS provider
+# configured on the project. `supabase start` (local Docker dev) picks
+# this up automatically. Whether `supabase config push` also applies it
+# to an already-linked remote/hosted project the same way could not be
+# confirmed from documentation while offline from a real project to test
+# against — if `supabase config push` doesn't take effect remotely,
+# Authentication → Providers → Phone in the dashboard has its own
+# separate "Test phone numbers" UI that does the same thing for a
+# hosted project (still requires *a* provider — Twilio, Vonage, etc. —
+# to be selected/saved first, even though it's never actually called
+# for a number listed here or there).
+#
+# `[auth.sms.test_otp]` alone is not enough — GoTrue also checks the
+# parent `[auth.sms]` table's own `enable_signup` flag before it will
+# accept ANY phone-based sign-in attempt (test number or not). This repo's
+# config.toml never had an `[auth.sms]` block at all (it went straight
+# from the CLI default, which is `enable_signup = false`, since this repo
+# was originally built around a different auth flow) — so every OTP
+# request was being rejected before it even reached the test_otp check,
+# surfacing in the app as the generic "Тодорхойгүй алдаа" (UnexpectedFailure)
+# message, since the rejection isn't a case `Failure.from` maps to
+# something more specific. `enable_confirmations = false` skips a second
+# confirmation SMS after verification (not needed for local/test use).
+[auth.sms]
+enable_signup = true
+enable_confirmations = false
+
+# `enable_signup = true` above still wasn't enough on its own — confirmed
+# live via the browser's Network tab, which showed GoTrue rejecting every
+# OTP request with `{"code": "phone_provider_disabled", "message":
+# "Unsupported phone provider"}`. GoTrue requires at least one concrete
+# SMS provider to be marked `enabled = true` before it will treat phone
+# auth as configured at all — it checks this before it ever looks at
+# `test_otp`. This mirrors the hosted dashboard's own requirement (which
+# is where this same wall was hit earlier) — Test OTP short-circuits the
+# actual SMS *send*, not the requirement that *some* provider exist.
+#
+# Twilio is picked here only because it's the best-documented option; the
+# credentials below are placeholders and are never actually used, since
+# every number this app sends to during local/test use is in
+# `[auth.sms.test_otp]` above and GoTrue returns that mapped code without
+# ever calling Twilio's API. Do not put a real Twilio account here — if
+# phone auth for a real (non-test) number is ever needed locally, replace
+# these with real credentials at that point, not before.
+[auth.sms.twilio]
+enabled = true
+account_sid = "ACtestplaceholderaccountsid00000"
+message_service_sid = "MGtestplaceholdermessagesid00000"
+auth_token = "test-placeholder-auth-token-not-real"
+
+# The number below matches the phone format `Validators.normalizePhone`
+# produces (E.164 digits, no `+`) — enter `99999999` in the app's phone
+# field to hit it, then `123456` as the OTP. Add more lines here for
+# other test numbers as needed; never put a real user's number in this
+# file.
+[auth.sms.test_otp]
+97699999999 = "123456"
