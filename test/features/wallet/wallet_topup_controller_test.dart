@@ -234,7 +234,7 @@ void main() {
     expect(fake.getByIdCallCount, 1, reason: 'must not keep polling once settled');
   });
 
-  test('pollUntilSettled() gives up after the bounded number of pending polls', () async {
+  testWidgets('pollUntilSettled() gives up after the bounded number of pending polls', (tester) async {
     final fake = _FakeWalletTopupRepository()
       ..createResult = WalletTopupStart(topup: _topup(), checkoutUrl: 'https://x', mock: false)
       ..getByIdResult = _topup(status: WalletTopupStatus.pending);
@@ -242,14 +242,19 @@ void main() {
     final controller = container.read(walletTopupControllerProvider.notifier);
     await controller.create(10000);
 
-    await controller.pollUntilSettled();
+    final polling = controller.pollUntilSettled();
+    await tester.pump();
+    for (int attempt = 1; attempt < 20; attempt++) {
+      await tester.pump(const Duration(seconds: 3));
+    }
+    await polling;
 
     // Never settles (always pending) — must give up rather than spin
     // forever, leaving the user on awaitingPayment with the manual
     // "Шалгах" action still available.
     expect(controller.state.step, WalletTopupStep.awaitingPayment);
     expect(fake.getByIdCallCount, 20);
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  });
 
   test('mockComplete() paid -> succeeded', () async {
     final fake = _FakeWalletTopupRepository()
