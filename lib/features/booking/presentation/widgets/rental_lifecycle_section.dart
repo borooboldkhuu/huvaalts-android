@@ -110,13 +110,12 @@ class _ActionTile extends StatelessWidget {
   const _ActionTile({
     required this.title,
     required this.subtitle,
-    this.trailingIcon = Icons.chevron_right,
     this.onTap,
   });
 
   final String title;
   final String subtitle;
-  final IconData trailingIcon;
+  final IconData trailingIcon = Icons.chevron_right;
   final VoidCallback? onTap;
 
   @override

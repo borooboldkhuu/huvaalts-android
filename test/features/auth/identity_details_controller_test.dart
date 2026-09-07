@@ -109,7 +109,7 @@ void main() {
   ProviderContainer buildContainer({
     AppUser? user,
     required _FakeIdentityDetailsRepository identityFake,
-    _FakeProfileRepository? profileFake,
+    ProfileRepository? profileFake,
   }) {
     final container = ProviderContainer(
       overrides: [

@@ -1,3 +1,4 @@
+import 'package:huvalts/shared/entities/app_banner.dart';
 import 'package:huvalts/features/admin/domain/entities/asset_moderation_summary.dart';
 import 'package:huvalts/features/admin/domain/entities/platform_settings.dart';
 import 'package:huvalts/features/admin/domain/entities/promotion.dart';
@@ -201,4 +202,17 @@ class FakeAdminRepository implements AdminRepository {
     if (errorToThrow != null) throw errorToThrow!;
     return reconcileWireTopupsResult ?? const WireTopupReconciliationResult(checked: 0, credited: 0, markedFailed: 0);
   }
+  @override
+  Future<List<AppBanner>> getAppBanners() async => throw UnimplementedError();
+
+  @override
+  Future<AppBanner> upsertAppBanner({
+    String? id,
+    required String storagePath,
+    required int sortOrder,
+    required bool isActive,
+  }) async => throw UnimplementedError();
+
+  @override
+  Future<void> deleteAppBanner(String id) async => throw UnimplementedError();
 }
