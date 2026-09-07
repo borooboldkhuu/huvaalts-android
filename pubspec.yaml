@@ -3,7 +3,7 @@ description: >
   ХУВААЛЦ — Mongolia's premium peer-to-peer asset rental marketplace.
   Ашигладаггүй зүйлээ мөнгө болго.
 publish_to: "none"
-version: 0.12.6+1
+version: 0.12.7+2
 
 environment:
   sdk: ^3.8.0

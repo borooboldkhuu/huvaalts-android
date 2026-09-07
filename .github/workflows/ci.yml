@@ -1,4 +1,4 @@
-name: Android APK
+name: Android Demo APK
 
 on:
   push:
@@ -32,18 +32,18 @@ jobs:
       - name: Generate Android project
         run: flutter create . --platforms=android --project-name huvalts --org mn.huvaalts
       - name: Configure Android SDK compatibility
-        run: python3 tool/configure_android.py
+        run: python3 tool/configure_android.py --demo
       - run: flutter pub get
       - name: Generate models
         run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter analyze --no-fatal-infos
       - run: flutter test --dart-define-from-file=env/development.json
-      - name: Build development APK
-        run: flutter build apk --debug --target lib/main.dart --dart-define-from-file=env/development.json
+      - name: Build offline demo APK
+        run: flutter build apk --debug --target lib/main_demo.dart
       - name: Save installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: huvaalts-android-development-apk
+          name: huvaalts-android-offline-demo-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
           retention-days: 14
