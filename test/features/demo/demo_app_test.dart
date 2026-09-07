@@ -27,11 +27,15 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Canon EOS R6 камер'));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.byKey(const Key('days-plus')), 250);
+    await tester.drag(find.byType(ListView), const Offset(0, -450));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('days-plus')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('days-plus')));
     await tester.pump();
     expect(find.text('Нийт: 170,000 ₮'), findsOneWidget);
     await tester.ensureVisible(find.byKey(const Key('demo-book')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('demo-book')));
     await tester.pumpAndSettle();
     expect(find.text('2 хоног • 170,000 ₮'), findsOneWidget);
