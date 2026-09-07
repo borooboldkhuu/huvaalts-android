@@ -79,11 +79,12 @@ class _FakeIdentityVerificationRepository implements IdentityVerificationReposit
 void main() {
   ProviderContainer buildContainer({
     AppUser? user,
+    bool signedOut = false,
     _FakeIdentityVerificationRepository? repo,
   }) {
     final container = ProviderContainer(
       overrides: [
-        authRepositoryProvider.overrideWithValue(_FakeAuthRepository(userOverride: user ?? _user())),
+        authRepositoryProvider.overrideWithValue(_FakeAuthRepository(userOverride: signedOut ? null : (user ?? _user()))),
         identityVerificationRepositoryProvider
             .overrideWithValue(repo ?? _FakeIdentityVerificationRepository()),
       ],
@@ -107,7 +108,7 @@ void main() {
   });
 
   test('start() fails with UnauthorizedException-shaped error when signed out', () async {
-    final container = buildContainer(user: null);
+    final container = buildContainer(signedOut: true);
     final controller = container.read(verificationControllerProvider.notifier);
 
     await controller.start();

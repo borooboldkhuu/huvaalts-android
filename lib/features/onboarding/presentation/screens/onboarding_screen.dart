@@ -78,9 +78,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 onPageChanged: (index) =>
                     ref.read(onboardingControllerProvider.notifier).setPage(index),
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxxl),
-                    child: Column(
+                  return LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxxl),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                        child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Illustration placeholder — replace with production
@@ -105,6 +108,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           style: theme.textTheme.displayMedium,
                         ),
                       ],
+                        ),
+                      ),
                     ),
                   );
                 },

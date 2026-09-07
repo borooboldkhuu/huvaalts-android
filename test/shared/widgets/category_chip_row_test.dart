@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:huvalts/app/localization/app_localizations.dart';
 import 'package:huvalts/core/constants/asset_categories.dart';
 import 'package:huvalts/shared/widgets/category_chip_row.dart';
+import 'package:huvalts/shared/widgets/category_label.dart';
 
 void main() {
   Widget wrap(Widget child) {
@@ -25,9 +26,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Бүгд'), findsOneWidget);
-    expect(find.text('Камер'), findsOneWidget);
-    expect(find.text('Дрон'), findsOneWidget);
-    expect(find.byType(CategoryAvatar), findsNWidgets(AssetCategory.values.length));
+    const l10n = AppLocalizations(Locale('mn'));
+    for (final category in AssetCategory.values) {
+      final label = find.text(categoryLabel(category, l10n));
+      await tester.scrollUntilVisible(label, 200);
+      expect(label, findsOneWidget);
+    }
   });
 
   testWidgets('tapping a category chip reports that category, tapping "Бүгд" reports null', (tester) async {
@@ -47,7 +51,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Камер'));
+    await tester.tap(find.text('Камер & Зураг авалт'));
     expect(tapped, isTrue);
     expect(reported, AssetCategory.camera);
 
